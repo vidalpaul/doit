@@ -24,6 +24,13 @@ contract ToDo {
       bool done
    );
 
+   modifier taskExists(uint256 id) {
+      if (tasks[id].id == 0) {
+         revert();
+      }
+      _;
+   }
+
    function createTask(string memory _content, string memory _author) public {
       lastTaskId++;
       tasks[lastTaskId] = Task(
@@ -40,6 +47,7 @@ contract ToDo {
    function getTask(uint256 id)
       public
       view
+      taskExists(id)
       returns (
          uint256,
          uint256,
